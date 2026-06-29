@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Exercise Plan</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<section class="about">
+
+<h1>🏋️ Exercise Planner</h1>
+
+<p>
+Goal Based Exercise Recommendations
+</p>
+
+</section>
+
+{% if goal == "Weight Gain" %}
+
+<section class="features">
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/squat.jpg') }}">
+
+<h3>🏋️ Squats</h3>
+
+<p><b>Reps:</b> 4 Sets × 10 Reps</p>
+
+<p>
+Builds leg strength, increases muscle mass
+and supports healthy weight gain.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/benchpress.jpg') }}">
+
+<h3>💪 Bench Press</h3>
+
+<p><b>Reps:</b> 4 Sets × 10 Reps</p>
+
+<p>
+Develops chest, shoulders and triceps while
+improving upper-body strength.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/deadlift.jpg') }}">
+
+<h3>🔥 Deadlift</h3>
+
+<p><b>Reps:</b> 4 Sets × 8 Reps</p>
+
+<p>
+Promotes full-body muscle growth and improves
+overall strength.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/lunges.jpg') }}">
+
+<h3>🚶 Lunges</h3>
+
+<p><b>Reps:</b> 3 Sets × 12 Reps</p>
+
+<p>
+Strengthens legs and glutes while improving
+balance and stability.
+</p>
+
+</div>
+
+</section>
+
+{% elif goal == "Weight Loss" %}
+
+<section class="features">
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/running.jpg') }}">
+
+<h3>🏃 Running</h3>
+
+<p><b>Duration:</b> 20–30 Minutes</p>
+
+<p>
+Burns calories efficiently and improves
+cardiovascular fitness.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/jumprope.jpg') }}">
+
+<h3>🪢 Jump Rope</h3>
+
+<p><b>Duration:</b> 10–15 Minutes</p>
+
+<p>
+High calorie burning workout that boosts
+stamina and endurance.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/burpees.jpg') }}">
+
+<h3>🔥 Burpees</h3>
+
+<p><b>Reps:</b> 3 Sets × 15 Reps</p>
+
+<p>
+Full-body exercise that helps accelerate
+fat loss.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/mountainclimbers.jpg') }}">
+
+<h3>⛰️ Mountain Climbers</h3>
+
+<p><b>Reps:</b> 3 Sets × 20 Reps</p>
+
+<p>
+Targets the core and helps improve fat burning.
+</p>
+
+</div>
+
+</section>
+
+{% else %}
+
+<section class="features">
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/walking.jpg') }}">
+
+<h3>🚶 Walking</h3>
+
+<p><b>Duration:</b> 30 Minutes</p>
+
+<p>
+Helps maintain fitness and supports heart health.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/plank.jpg') }}">
+
+<h3>🧘 Plank</h3>
+
+<p><b>Duration:</b> 30–60 Seconds</p>
+
+<p>
+Strengthens core muscles and improves posture.
+</p>
+
+</div>
+
+<div class="card">
+
+<img src="{{ url_for('static', filename='images/stretching.jpg') }}">
+
+<h3>🤸 Stretching</h3>
+
+<p><b>Duration:</b> 10–15 Minutes</p>
+
+<p>
+Improves flexibility and reduces muscle stiffness.
+</p>
+
+</div>
+
+</section>
+
+{% endif %}
+
+<div style="text-align:center; margin:40px;">
+
+<a href="/report">
+
+<button>
+
+📄 View AI Report
+
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>
+

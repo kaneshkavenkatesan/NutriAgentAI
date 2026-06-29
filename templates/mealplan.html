@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weekly Meal Plan</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <section class="about">
+
+        <h1>🍽 Weekly AI Meal Plan</h1>
+
+        <p>
+            Personalized 7-Day Nutrition Strategy
+        </p>
+
+    </section>
+
+    <section class="features">
+
+        {% for day, meals in plan.items() %}
+
+        <div class="meal-card">
+
+            <h2>{{ day }}</h2>
+
+            <br>
+
+            <p>
+                <strong>Breakfast:</strong><br>
+                {{ meals["Breakfast"] }}
+            </p>
+
+            <p><strong>Ingredients:</strong></p>
+
+            <ul class="ingredient-list">
+                {% for item in ingredients[day]["Breakfast"] %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            <hr>
+
+            <p>
+                <strong>Lunch:</strong><br>
+                {{ meals["Lunch"] }}
+            </p>
+
+            <p><strong>Ingredients:</strong></p>
+
+            <ul class="ingredient-list">
+                {% for item in ingredients[day]["Lunch"] %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            <hr>
+
+            <p>
+                <strong>Snack:</strong><br>
+                {{ meals["Snack"] }}
+            </p>
+
+            <p><strong>Ingredients:</strong></p>
+
+            <ul class="ingredient-list">
+                {% for item in ingredients[day]["Snack"] %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+            <hr>
+
+            <p>
+                <strong>Dinner:</strong><br>
+                {{ meals["Dinner"] }}
+            </p>
+
+            <p><strong>Ingredients:</strong></p>
+
+            <ul class="ingredient-list">
+                {% for item in ingredients[day]["Dinner"] %}
+                <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <div style="text-align:center; margin:40px;">
+
+        <a href="/exercise">
+
+            <button>
+                🏋️ View Exercise Plan
+            </button>
+
+        </a>
+        <a href="/grocery">
+            <button>
+                🛒 View Grocery List
+            </button>
+        </a>
+
+    </div>
+
+</body>
+
+</html>

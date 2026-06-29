@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Weekly Grocery List</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<section class="about">
+    <h1>🛒 Weekly Grocery List</h1>
+    <p>Items required for your weekly meal plan</p>
+</section>
+
+<section class="features">
+
+    <div class="card">
+
+        {% for item in grocery_list %}
+
+        <p>✅ {{ item }}</p>
+        <br>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

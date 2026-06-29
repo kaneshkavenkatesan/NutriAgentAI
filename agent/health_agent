@@ -1,0 +1,33 @@
+def calculate_bmi(weight, height):
+
+    bmi = weight / ((height / 100) ** 2)
+
+    return round(bmi, 2)
+
+
+def bmi_status(bmi):
+
+    if bmi < 18.5:
+        return "Underweight"
+
+    elif bmi < 25:
+        return "Normal"
+
+    elif bmi < 30:
+        return "Overweight"
+
+    return "Obese"
+
+
+def health_score(bmi):
+
+    if bmi < 18.5:
+        return 60
+
+    elif bmi < 25:
+        return 90
+
+    elif bmi < 30:
+        return 70
+
+    return 50

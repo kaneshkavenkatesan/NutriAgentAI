@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Saved Users</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<section class="about">
+
+<h1>👥 User Records</h1>
+
+<p>
+Saved Nutrition Assessments
+</p>
+
+</section>
+
+<section class="form-section">
+
+<div class="form-card" style="width:95%;">
+
+<table style="width:100%; border-collapse:collapse;">
+
+<tr>
+
+<th>Name</th>
+<th>Email</th>
+<th>Age</th>
+<th>Gender</th>
+<th>Goal</th>
+<th>Food Preference</th>
+<th>BMI</th>
+<th>Status</th>
+<th>Calories</th>
+<th>Action</th>
+
+</tr>
+
+{% for user in users %}
+
+<tr>
+
+<td>{{ user[1] }}</td>  
+<td>{{ user[2] }}</td>   
+<td>{{ user[3] }}</td>   
+<td>{{ user[4] }}</td>  
+<td>{{ user[7] }}</td>   
+<td>{{ user[8] }}</td>   
+<td>{{ user[9] }}</td>   
+<td>{{ user[10] }}</td> 
+<td>{{ user[11] }}</td>  
+
+<td>
+
+<a href="/delete_user/{{ user[0] }}">
+
+<button>
+🗑 Delete
+</button>
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</section>
+
+<div style="text-align:center; margin:30px;">
+
+<a href="/">
+
+<button>
+🏠 Back To Home
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>
+
+
+

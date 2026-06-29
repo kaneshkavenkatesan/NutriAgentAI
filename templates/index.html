@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NutriAgent AI</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+NutriAgent AI
+</div>
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+
+<li><a href="#features">Features</a></li>
+
+<li><a href="#about">About</a></li>
+
+</ul>
+
+</nav>
+
+<!-- HERO SECTION -->
+
+<section id="home" class="hero">
+
+<div class="hero-text">
+
+<h1>
+Intelligent Nutrition Planning
+</h1>
+
+<p>
+An Agentic AI based nutrition assistant
+that helps users understand calories,
+diet plans and healthy lifestyle choices.
+</p>
+
+<button onclick="location.href='#form-section'">
+    Get Started
+</button>
+
+</div>
+
+<div class="hero-image">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/706/706164.png"
+alt="nutrition">
+
+
+</div>
+
+</section>
+
+<!-- FEATURES SECTION -->
+
+<section id="features" class="features">
+
+<div class="card">
+<h3>📊 BMI Analysis</h3>
+<p>Track health status instantly.</p>
+</div>
+
+<div class="card">
+<h3>🔥 Calorie Tracking</h3>
+<p>Know your daily calorie needs.</p>
+</div>
+
+<div class="card">
+<h3>🤖 AI Suggestions</h3>
+<p>Get personalized guidance.</p>
+</div>
+
+</section>
+
+<!-- ABOUT SECTION -->
+
+<section id="about" class="about">
+
+<h2>
+About NutriAgent AI
+</h2>
+
+<p>
+
+NutriAgent AI is an Agentic AI-based nutrition
+assistant designed to help users analyze their
+health profile, calculate BMI, estimate calorie
+requirements, and receive personalized nutrition
+guidance based on their goals.
+
+The project combines modern web development and
+AI-driven decision making to provide a smart
+nutrition planning experience.
+
+</p>
+
+</section>
+
+<!-- FORM SECTION -->
+
+<!-- FORM SECTION -->
+
+<section id="form-section" class="form-section">
+
+<div class="form-card">
+
+<h2>👤 Kaneshka's Profile</h2>
+
+<form action="/analyze" method="POST">
+
+<h3>👤 My Profile</h3>
+
+<p>
+<strong>Name:</strong> Kaneshka
+</p>
+
+<br>
+
+<p>
+<strong>Email:</strong> kaneshkavenkat@gmail.com
+</p>
+
+<br>
+
+<p>
+<strong>Age:</strong> 21
+</p>
+
+<br>
+
+<p>
+<strong>Gender:</strong> Female
+</p>
+
+<br>
+
+<input
+type="number"
+name="height"
+placeholder="Height (cm)"
+value="{{ user_data.get('height','') }}"
+required>
+
+<input
+type="number"
+name="weight"
+placeholder="Weight (kg)"
+value="{{ user_data.get('weight','') }}"
+required>
+
+<select name="goal" required>
+
+<option value="">Select Goal</option>
+
+<option value="Weight Gain"
+{% if user_data.get('goal') == 'Weight Gain' %}selected{% endif %}>
+Weight Gain
+</option>
+
+<option value="Weight Loss"
+{% if user_data.get('goal') == 'Weight Loss' %}selected{% endif %}>
+Weight Loss
+</option>
+
+<option value="Maintenance"
+{% if user_data.get('goal') == 'Maintenance' %}selected{% endif %}>
+Maintenance
+</option>
+</select>
+
+<select name="food_preference" required>
+
+<option value="">Select Food Preference</option>
+
+<option value="Vegetarian"
+{% if user_data.get('food_preference') == 'Vegetarian' %}selected{% endif %}>
+Vegetarian
+</option>
+
+<option value="Non-Vegetarian"
+{% if user_data.get('food_preference') == 'Non-Vegetarian' %}selected{% endif %}>
+Non-Vegetarian
+</option>
+
+</select>
+
+<br><br>
+
+<h3>Food Allergies (Optional)</h3>
+
+<div class="allergy-box">
+
+<label>
+<input type="checkbox" name="allergy" value="Peanut">
+Peanut
+</label>
+
+<label>
+<input type="checkbox" name="allergy" value="Milk">
+Milk
+</label>
+
+<label>
+<input type="checkbox" name="allergy" value="Egg">
+Egg
+</label>
+
+<label>
+<input type="checkbox" name="allergy" value="Fish">
+Fish
+</label>
+
+</div>
+
+<br><br>
+
+
+
+<button type="submit">
+Analyze
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+
+</body>
+
+</html>
+
+</body>
+
+</html>

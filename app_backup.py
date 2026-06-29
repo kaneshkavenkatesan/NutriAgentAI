@@ -1,0 +1,230 @@
+from flask import Flask, render_template, request, redirect
+
+from agent.ingredient_agent import get_ingredients
+from agent.grocery_agent import generate_grocery_list
+
+from agent.nutrition_agent import (
+    calculate_bmi,
+    bmi_status,
+    calculate_calories,
+    get_recommendation,
+    health_score,
+    meal_plan
+)
+
+from agent.ai_agent import ai_decision
+from agent.email_agent import send_email
+from scheduler import scheduler
+
+
+from database.db import (
+    create_table,
+    save_user,
+    get_users,
+    delete_user
+)
+
+app = Flask(__name__)
+
+create_table()
+
+user_data = {}
+sent_goals = []
+scheduler.start()
+
+
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/analyze", methods=["POST"])
+def analyze():
+
+    global user_data
+
+    name = "Kaneshka"
+    email = "kaneshkavenkat@gmail.com"
+    age = 21
+    gender = "Female"
+
+    height = float(request.form["height"])
+    weight = float(request.form["weight"])
+
+    goal = request.form["goal"]
+    global sent_goals
+    food_preference = request.form["food_preference"]
+    allergies = request.form.getlist("allergy")
+
+    bmi = calculate_bmi(weight, height)
+    status = bmi_status(bmi)
+
+    calories = calculate_calories(
+        weight,
+        height,
+        age,
+        gender,
+        goal
+    )
+
+    recommendation = get_recommendation(goal)
+    score = health_score(bmi)
+
+    plan = meal_plan(
+        goal,
+        food_preference,
+        allergies
+    )
+
+    meal_ingredients = {}
+
+    for day, meals in plan.items():
+
+        meal_ingredients[day] = {}
+
+        for meal_type, food in meals.items():
+
+            meal_ingredients[day][meal_type] = get_ingredients(food)
+    grocery_list = generate_grocery_list(
+    plan,
+    meal_ingredients
+)        
+           
+
+    ai_result = ai_decision(goal, bmi, status)
+
+    if goal not in sent_goals:
+
+      send_email(
+        email,
+        f"NutriAgent AI - {goal}",
+        f"""
+Hello {name},
+
+Your {goal} nutrition plan has been generated.
+
+BMI: {bmi}
+Status: {status}
+Calories Needed: {calories}
+
+Please check your meal plan in NutriAgent AI.
+"""
+    )
+
+    sent_goals.append(goal)
+
+    save_user(
+        name,
+        email,
+        age,
+        gender,
+        height,
+        weight,
+        goal,
+        food_preference,
+        bmi,
+        status,
+        calories
+    )
+
+    user_data = {
+    "name": name,
+    "email": email,
+    "age": age,
+    "gender": gender,
+    "bmi": bmi,
+    "status": status,
+    "calories": calories,
+    "goal": goal,
+    "food_preference": food_preference,
+    "allergies": allergies,
+    "score": score,
+    "recommendation": recommendation,
+    "plan": plan,
+    "ingredients": meal_ingredients,
+    "grocery_list": grocery_list,
+    "ai_result": ai_result
+}
+        
+    return render_template(
+        "bmi.html",
+        name=name,
+        bmi=bmi,
+        status=status,
+        calories=calories,
+        goal=goal,
+        food_preference=food_preference,
+        score=score,
+        recommendation=recommendation,
+        ai_result=ai_result
+    )
+
+
+@app.route("/mealplan")
+def mealplan():
+
+    if "plan" not in user_data:
+        return "Please submit the form first."
+
+    return render_template(
+        "mealplan.html",
+        plan=user_data["plan"],
+        ingredients=user_data["ingredients"],
+        goal=user_data["goal"],
+        food_preference=user_data["food_preference"]
+    )
+
+
+@app.route("/exercise")
+def exercise():
+
+    if "goal" not in user_data:
+        return "Please submit the form first."
+
+    return render_template(
+        "exercise.html",
+        goal=user_data["goal"]
+    )
+
+
+@app.route("/report")
+def report():
+
+    return render_template(
+        "report.html",
+        ai_result=user_data.get("ai_result", "")
+    )
+@app.route("/grocery")
+def grocery():
+
+    if "grocery_list" not in user_data:
+        return "Please submit the form first."
+
+    return render_template(
+        "grocery.html",
+        grocery_list=user_data["grocery_list"]
+    )
+
+
+@app.route("/users")
+def users():
+
+    all_users = get_users()
+
+    return render_template(
+        "users.html",
+        users=all_users
+    )
+
+
+@app.route("/delete_user/<int:user_id>")
+def remove_user(user_id):
+
+    delete_user(user_id)
+
+    return redirect("/users")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
