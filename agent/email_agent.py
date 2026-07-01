@@ -1,48 +1,49 @@
-import smtplib
+import os
+import requests
 
-from email.mime.text import MIMEText
 
+def send_email(receiver_email, subject, message):
 
-def send_email(
-    receiver_email,
-    subject,
-    message
-):
+    api_key = os.environ.get("BREVO_API_KEY")
 
-    sender_email = "kaneshkavenkat@gmail.com"
+    url = "https://api.brevo.com/v3/smtp/email"
 
-    app_password = "jhwl ylvw rvdo utmw"
+    headers = {
+        "accept": "application/json",
+        "api-key": api_key,
+        "content-type": "application/json"
+    }
 
-    msg = MIMEText(message)
+    data = {
+        "sender": {
+            "name": "NutriAgent AI",
+            "email": "kaneshkavenkat@gmail.com"
+        },
+        "to": [
+            {
+                "email": receiver_email
+            }
+        ],
+        "subject": subject,
+        "htmlContent": f"""
+        <html>
+        <body>
+            <h2>NutriAgent AI</h2>
 
-    msg["Subject"] = subject
-    msg["From"] = sender_email
-    msg["To"] = receiver_email
+            <pre style="font-size:16px;">
+{message}
+            </pre>
 
-    try:
+        </body>
+        </html>
+        """
+    }
 
-        server = smtplib.SMTP(
-            "smtp.gmail.com",
-            587
-        )
+    response = requests.post(
+        url,
+        json=data,
+        headers=headers
+    )
 
-        server.starttls()
-
-        server.login(
-            sender_email,
-            app_password
-        )
-
-        server.sendmail(
-            sender_email,
-            receiver_email,
-            msg.as_string()
-        )
-
-        server.quit()
-
-        print("Email Sent Successfully")
-
-    except Exception as e:
-
-        print("Email Error:", e)
+    print(response.status_code)
+    print(response.text)
