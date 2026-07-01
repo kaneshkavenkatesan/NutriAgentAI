@@ -104,10 +104,23 @@ def analyze():
 
     if goal not in sent_goals:
 
-    # Email sending is temporarily disabled
-    # because Render blocks SMTP connections.
+      send_email(
+          email,
+          f"NutriAgent AI - {goal}",
+          f"""
+Hello {name},
 
-     sent_goals.append(goal)
+Your {goal} nutrition plan has been generated.
+
+BMI: {bmi}
+Status: {status}
+Calories Needed: {calories}
+
+Please check your meal plan in NutriAgent AI.
+"""
+    )
+
+    sent_goals.append(goal)
 
     save_user(
         name,
