@@ -3,6 +3,7 @@ import requests
 
 
 def send_email(receiver_email, subject, message):
+    print("BREVO EMAIL FUNCTION CALLED")
 
     api_key = os.environ.get("BREVO_API_KEY")
 
