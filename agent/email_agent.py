@@ -1,11 +1,12 @@
 import os
 import requests
 
-
 def send_email(receiver_email, subject, message):
-    print("BREVO EMAIL FUNCTION CALLED")
+
+    print("===== EMAIL FUNCTION STARTED =====")
 
     api_key = os.environ.get("BREVO_API_KEY")
+    print("API KEY FOUND:", api_key is not None)
 
     url = "https://api.brevo.com/v3/smtp/email"
 
@@ -27,24 +28,17 @@ def send_email(receiver_email, subject, message):
         ],
         "subject": subject,
         "htmlContent": f"""
-        <html>
-        <body>
-            <h2>NutriAgent AI</h2>
-
-            <pre style="font-size:16px;">
-{message}
-            </pre>
-
-        </body>
-        </html>
+        <h2>NutriAgent AI</h2>
+        <pre>{message}</pre>
         """
     }
 
     response = requests.post(
         url,
-        json=data,
-        headers=headers
+        headers=headers,
+        json=data
     )
 
-    print(response.status_code)
-    print(response.text)
+    print("STATUS:", response.status_code)
+    print("RESPONSE:", response.text)
+    print("===== EMAIL FUNCTION FINISHED =====")
