@@ -104,10 +104,10 @@ def analyze():
 
     if goal not in sent_goals:
 
-      send_email(
-          email,
-          f"NutriAgent AI - {goal}",
-          f"""
+        send_email(
+            email,
+            f"NutriAgent AI - {goal}",
+            f"""
 Hello {name},
 
 Your {goal} nutrition plan has been generated.
@@ -118,9 +118,9 @@ Calories Needed: {calories}
 
 Please check your meal plan in NutriAgent AI.
 """
-    )
+        )
 
-    sent_goals.append(goal)
+        sent_goals.append(goal)
 
     save_user(
         name,
