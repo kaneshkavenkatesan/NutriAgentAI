@@ -111,8 +111,8 @@ scheduler.add_job(
 scheduler.add_job(
     lunch_job,
     "cron",
-    hour=13,
-    minute=0
+    hour=12,
+    minute=30
 )
 
 scheduler.add_job(
