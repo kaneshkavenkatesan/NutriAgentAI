@@ -17,13 +17,15 @@ from agent.email_agent import send_email
 from scheduler import scheduler
 
 
-
 from database.db import (
     create_table,
     save_user,
     get_users,
-    delete_user
+    delete_user,
+    get_latest_user
 )
+
+from agent.reminder_agent import send_meal_reminder
 
 app = Flask(__name__)
 app.secret_key = "nutriagent_secret_key"
@@ -257,6 +259,30 @@ def remove_user(user_id):
     delete_user(user_id)
 
     return redirect("/users")
+
+@app.route("/send-reminder/<meal_type>")
+def send_reminder(meal_type):
+
+    user = get_latest_user()
+
+    if user is None:
+        return "No user found"
+
+    email = user[2]
+    goal = user[7]
+    food_preference = user[8]
+
+    allergies = []
+
+    send_meal_reminder(
+        email,
+        goal,
+        food_preference,
+        allergies,
+        meal_type
+    )
+
+    return f"{meal_type} reminder sent successfully"
 
 
 import os
