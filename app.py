@@ -32,7 +32,7 @@ create_table()
 
 user_data = {}
 sent_goals = []
-scheduler.start()
+
 
 
 
