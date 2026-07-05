@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect,session
+from datetime import datetime
 
 from agent.ingredient_agent import get_ingredients
 from agent.grocery_agent import generate_grocery_list
@@ -14,7 +15,7 @@ from agent.nutrition_agent import (
 
 from agent.ai_agent import ai_decision
 from agent.email_agent import send_email
-from scheduler import scheduler
+from scheduler import schedule_reminder
 
 
 from database.db import (
@@ -283,14 +284,45 @@ def send_reminder(meal_type):
     )
 
     return f"{meal_type} reminder sent successfully"
+    
+
+
+@app.route("/set-reminder", methods=["POST"])
+def set_reminder():
+
+    user = get_latest_user()
+
+    if user is None:
+        return "No user found"
+
+    reminder_time = request.form["reminder_time"]
+
+    reminder_datetime = datetime.strptime(
+        reminder_time,
+        "%Y-%m-%dT%H:%M"
+    )
+
+    schedule_reminder(
+        reminder_datetime,
+        user[2],      # email
+        user[7],      # goal
+        user[8],      # food preference
+        []            # allergies
+    )
+
+    return "Reminder Scheduled Successfully!"
 
 
 import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False,
+        use_reloader=False
+    )
 
 
 
