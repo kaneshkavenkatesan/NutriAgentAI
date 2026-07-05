@@ -1,134 +1,51 @@
 from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 
-from database.db import get_latest_user
 from agent.reminder_agent import send_meal_reminder
 
 scheduler = BackgroundScheduler(timezone="Asia/Kolkata")
-
-
-def breakfast_job():
-
-    user = get_latest_user()
-
-    if user is None:
-        return
-
-    email = user[2]
-    goal = user[7]
-    food_preference = user[8]
-
-    allergies = []
-
-    send_meal_reminder(
-        email,
-        goal,
-        food_preference,
-        allergies,
-        "Breakfast"
-    )
-
-
-def snack_job():
-
-    user = get_latest_user()
-
-    if user is None:
-        return
-
-    email = user[2]
-    goal = user[7]
-    food_preference = user[8]
-
-    allergies = []
-
-    send_meal_reminder(
-        email,
-        goal,
-        food_preference,
-        allergies,
-        "Snack"
-    )
-
-
-def lunch_job():
-
-    user = get_latest_user()
-
-    if user is None:
-        return
-
-    email = user[2]
-    goal = user[7]
-    food_preference = user[8]
-
-    allergies = []
-
-    send_meal_reminder(
-        email,
-        goal,
-        food_preference,
-        allergies,
-        "Lunch"
-    )
-
-
-def dinner_job():
-
-    user = get_latest_user()
-
-    if user is None:
-        return
-
-    email = user[2]
-    goal = user[7]
-    food_preference = user[8]
-
-    allergies = []
-
-    send_meal_reminder(
-        email,
-        goal,
-        food_preference,
-        allergies,
-        "Dinner"
-    )
-
-
-scheduler.add_job(
-    breakfast_job,
-    "cron",
-    hour=8,
-    minute=0
-)
-
-scheduler.add_job(
-    snack_job,
-    "cron",
-    hour=11,
-    minute=0
-)
-
-scheduler.add_job(
-    lunch_job,
-    "cron",
-    hour=13,
-    minute=0
-)
-
-scheduler.add_job(
-    snack_job,
-    "cron",
-    hour=17,
-    minute=0
-)
-
-scheduler.add_job(
-    dinner_job,
-    "cron",
-    hour=20,
-    minute=0
-)
-
 scheduler.start()
 
 print("NutriAgent AI Reminder Scheduler Started")
+
+
+def schedule_reminder(
+    reminder_time,
+    email,
+    goal,
+    food_preference,
+    allergies
+):
+    hour = reminder_time.hour
+
+    if 6 <= hour < 10:
+        meal_type = "Breakfast"
+
+    elif 10 <= hour < 12:
+        meal_type = "Snack"
+
+    elif 12 <= hour < 16:
+        meal_type = "Lunch"
+
+    elif 16 <= hour < 19:
+        meal_type = "Snack"
+
+    else:
+        meal_type = "Dinner"
+
+    scheduler.add_job(
+        func=send_meal_reminder,
+        trigger="date",
+        run_date=reminder_time,
+        args=[
+            email,
+            goal,
+            food_preference,
+            allergies,
+            meal_type
+        ],
+        id="meal_reminder",
+        replace_existing=True
+    )
+
+    print("Reminder Scheduled:", reminder_time)
