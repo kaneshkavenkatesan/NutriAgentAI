@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect,session
 from datetime import datetime
-from zoneinfo import ZoneInfo
+
 
 from agent.ingredient_agent import get_ingredients
 from agent.grocery_agent import generate_grocery_list
@@ -16,7 +16,7 @@ from agent.nutrition_agent import (
 
 from agent.ai_agent import ai_decision
 from agent.email_agent import send_email
-from scheduler import schedule_reminder
+
 
 
 from database.db import (
@@ -287,7 +287,6 @@ def send_reminder(meal_type):
     return f"{meal_type} reminder sent successfully"
     
 
-
 @app.route("/set-reminder", methods=["POST"])
 def set_reminder():
 
@@ -301,25 +300,52 @@ def set_reminder():
     reminder_datetime = datetime.strptime(
         reminder_time,
         "%Y-%m-%dT%H:%M"
-    ).replace(
-        tzinfo=ZoneInfo("Asia/Kolkata")
     )
 
-    print("Current Server Time:",
-          datetime.now(ZoneInfo("Asia/Kolkata")))
+    hour = reminder_datetime.hour
 
-    print("Reminder Time:",
-          reminder_datetime)
+    if 6 <= hour < 10:
+        meal_type = "Breakfast"
 
-    schedule_reminder(
-        reminder_datetime,
+    elif 10 <= hour < 12:
+        meal_type = "Snack"
+
+    elif 12 <= hour < 16:
+        meal_type = "Lunch"
+
+    elif 16 <= hour < 19:
+        meal_type = "Snack"
+
+    else:
+        meal_type = "Dinner"
+
+    send_meal_reminder(
         user[2],
         user[7],
         user[8],
-        []
+        [],
+        meal_type
     )
 
-    return redirect("/mealplan")
+    return """
+    <html>
+    <head>
+        <title>Reminder</title>
+    </head>
+    <body style="font-family:Arial;text-align:center;margin-top:120px;">
+        <h2>✅ Reminder Sent Successfully!</h2>
+
+        <br><br>
+
+        <a href="/mealplan">
+            <button style="padding:12px 25px;font-size:18px;">
+                Back to Meal Plan
+            </button>
+        </a>
+
+    </body>
+    </html>
+    """
 
 import os
 
