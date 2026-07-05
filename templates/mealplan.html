@@ -115,23 +115,28 @@
         </a>
 
     </div>
-    <div style="text-align:center; margin-top:30px;">
+    <div style="text-align:center; margin-top:40px;">
 
-    <a href="/send-reminder/Breakfast">
-        <button>🍳 Send Breakfast Reminder</button>
-    </a>
+    <h2>⏰ Meal Reminder</h2>
 
-    <a href="/send-reminder/Lunch">
-        <button>🍛 Send Lunch Reminder</button>
-    </a>
+    <form action="/set-reminder" method="POST">
 
-    <a href="/send-reminder/Snack">
-        <button>🍎 Send Snack Reminder</button>
-    </a>
+        <input
+            type="datetime-local"
+            name="reminder_time"
+            required
+            style="padding:10px; font-size:16px; border-radius:8px;"
+        >
 
-    <a href="/send-reminder/Dinner">
-        <button>🍽 Send Dinner Reminder</button>
-    </a>
+        <br><br>
+
+        <button type="submit">
+            📧 Schedule Reminder
+        </button>
+
+    </form>
+
+</div>
 
 </div>
 
