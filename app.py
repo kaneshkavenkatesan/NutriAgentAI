@@ -290,6 +290,8 @@ def send_reminder(meal_type):
 @app.route("/set-reminder", methods=["POST"])
 def set_reminder():
 
+    print("******** SET REMINDER ROUTE HIT ********")
+
     user = get_latest_user()
 
     if user is None:
@@ -297,21 +299,24 @@ def set_reminder():
 
     reminder_time = request.form["reminder_time"]
 
+    print("TIME RECEIVED:", reminder_time)
+
     reminder_datetime = datetime.strptime(
         reminder_time,
         "%Y-%m-%dT%H:%M"
     )
 
+    print("REMINDER DATETIME:", reminder_datetime)
+
     schedule_reminder(
         reminder_datetime,
-        user[2],      # email
-        user[7],      # goal
-        user[8],      # food preference
-        []            # allergies
+        user[2],
+        user[7],
+        user[8],
+        []
     )
 
-    return "Reminder Scheduled Successfully!"
-
+    return redirect("/mealplan")
 
 import os
 
