@@ -35,7 +35,7 @@ app.secret_key = "nutriagent_secret_key"
 create_table()
 
 user_data = {}
-sent_goals = []
+
 
 
 
@@ -106,12 +106,12 @@ def analyze():
 
     ai_result = ai_decision(goal, bmi, status)
 
-    if goal not in sent_goals:
+    if not session.get("analysis_email_sent"):
 
-        send_email(
-            email,
-            f"NutriAgent AI - {goal}",
-            f"""
+       send_email(
+        email,
+        f"NutriAgent AI - {goal}",
+        f"""
 Hello {name},
 
 Your {goal} nutrition plan has been generated.
@@ -122,9 +122,9 @@ Calories Needed: {calories}
 
 Please check your meal plan in NutriAgent AI.
 """
-        )
+    )
 
-        sent_goals.append(goal)
+    session["analysis_email_sent"] = True
 
     save_user(
         name,
