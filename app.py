@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect,session
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from agent.ingredient_agent import get_ingredients
 from agent.grocery_agent import generate_grocery_list
@@ -286,6 +287,7 @@ def send_reminder(meal_type):
     return f"{meal_type} reminder sent successfully"
     
 
+
 @app.route("/set-reminder", methods=["POST"])
 def set_reminder():
 
@@ -294,15 +296,30 @@ def set_reminder():
     if user is None:
         return "No user found"
 
-    send_meal_reminder(
-        user[2],      # email
-        user[7],      # goal
-        user[8],      # food preference
-        [],
-        "Lunch"
+    reminder_time = request.form["reminder_time"]
+
+    reminder_datetime = datetime.strptime(
+        reminder_time,
+        "%Y-%m-%dT%H:%M"
+    ).replace(
+        tzinfo=ZoneInfo("Asia/Kolkata")
     )
 
-    return "Email Sent!"
+    print("Current Server Time:",
+          datetime.now(ZoneInfo("Asia/Kolkata")))
+
+    print("Reminder Time:",
+          reminder_datetime)
+
+    schedule_reminder(
+        reminder_datetime,
+        user[2],
+        user[7],
+        user[8],
+        []
+    )
+
+    return redirect("/mealplan")
 
 import os
 
